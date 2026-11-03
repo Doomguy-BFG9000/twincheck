@@ -5,6 +5,8 @@ Each release is listed here and on [GitHub Releases](https://github.com/theRizwa
 
 ## Unreleased
 
+## 0.1.2 (2026-11-03)
+
 - The Markdown report keeps an outcome containing backticks inside a single code span, instead of closing the span
   early (#8 by @bfs2021).
 
