@@ -34,6 +34,17 @@ export function check(name, spec) {
   if (typeof subject !== 'function' || typeof reference !== 'function') {
     throw new TypeError('twincheck: subject and reference must both be functions')
   }
+  if (!Array.isArray(allow)) {
+    throw new TypeError('twincheck: allow must be an array')
+  }
+  for (const [i, entry] of allow.entries()) {
+    if (!entry || typeof entry.reason !== 'string' || entry.reason.trim().length === 0) {
+      throw new TypeError(`twincheck: allow[${i}] needs a non-empty "reason" string`)
+    }
+    if (typeof entry.when !== 'function') {
+      throw new TypeError(`twincheck: allow[${i}] needs a "when" function`)
+    }
+  }
   const arbitrary = typeof input === 'function' ? input(fc) : input
   const slug = slugify(name)
   const allowedHits = new Map()

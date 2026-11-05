@@ -68,6 +68,8 @@ twin('parse matches JSON.parse', {
 ```
 
 The run fails only on new disagreements, and `result.allowedHits` counts how often each reason applied.
+`allow` must be an array whose entries have a non-empty string `reason` and a function `when`; invalid options
+throw a `TypeError` before input generation starts, naming the entry and field.
 
 ## Reports and the regression corpus
 
