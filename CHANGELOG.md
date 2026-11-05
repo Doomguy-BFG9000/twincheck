@@ -5,7 +5,10 @@ Each release is listed here and on [GitHub Releases](https://github.com/theRizwa
 
 ## Unreleased
 
-- Validate `allow` entries before generating inputs, with a `TypeError` naming the invalid entry and field (#3 by @Doomguy-BFG9000).
+## 0.1.3 (2026-11-05)
+
+- Validate `allow` entries before generating inputs, with a `TypeError` naming the invalid entry and field
+  (#3 by @Doomguy-BFG9000).
 - `npm test` now runs on Windows too: the test script no longer relies on a shell-quoted glob.
 
 ## 0.1.2 (2026-11-03)
