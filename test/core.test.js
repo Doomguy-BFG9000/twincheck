@@ -211,3 +211,39 @@ test('pads a code span whose value ends with a backtick', () => {
   assert.ok(row)
   assert.ok(row.includes('`` throws Error: tail ` ``'))
 })
+
+test('rejects malformed allow options before generating any input', async t => {
+  const cases = [
+    [null, 'twincheck: allow must be an array'],
+    [{}, 'twincheck: allow must be an array'],
+    ['invalid', 'twincheck: allow must be an array'],
+    [[null], 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ when: () => true }], 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ reason: '', when: () => true }], 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ reason: '  ', when: () => true }], 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ reason: 1, when: () => true }], 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ reason: 'off by one', whn: () => true }], 'twincheck: allow[0] needs a "when" function'],
+    [[{ reason: 'off by one', when: true }], 'twincheck: allow[0] needs a "when" function'],
+    [Array(1), 'twincheck: allow[0] needs a non-empty "reason" string'],
+    [[{ reason: 'valid', when: () => true }, {}], 'twincheck: allow[1] needs a non-empty "reason" string'],
+  ]
+  for (const [i, [allow, message]] of cases.entries()) {
+    await t.test(`case ${i}: ${message}`, () => {
+      let generated = false
+      assert.throws(
+        () => check('bad allow', {
+          ...quiet,
+          input: fc => {
+            generated = true
+            return fc.nat()
+          },
+          subject: n => n,
+          reference: n => n,
+          allow,
+        }),
+        { name: 'TypeError', message },
+      )
+      assert.equal(generated, false, message)
+    })
+  }
+})
